@@ -1,3 +1,5 @@
+using EventPlanning.Infrastructure.Extensions;
+using EventPlanning.Core.Extensions;
 
 namespace EventPlanning.API
 {
@@ -13,6 +15,12 @@ namespace EventPlanning.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddCore();
+            builder.Services.AddPersistence(builder.Configuration);
+            builder.Services.ConfigureIdentity();
 
             var app = builder.Build();
 
@@ -25,6 +33,7 @@ namespace EventPlanning.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
