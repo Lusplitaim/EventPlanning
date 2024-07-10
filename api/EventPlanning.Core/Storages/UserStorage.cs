@@ -1,5 +1,6 @@
 ﻿using EventPlanning.Core.Data.Entities;
 using EventPlanning.Core.DTOs.Auth;
+using EventPlanning.Core.DTOs.User;
 using Microsoft.AspNetCore.Identity;
 
 namespace EventPlanning.Core.Storages
@@ -20,6 +21,24 @@ namespace EventPlanning.Core.Storages
                 Email = model.Email,
             };
             return await m_UserManager.CreateAsync(user, model.Password);
+        }
+
+        public async Task<UserDto?> GetAsync(string email)
+        {
+            var userEntity = await m_UserManager.FindByEmailAsync(email);
+            if (userEntity is null)
+            {
+                return null;
+            }
+
+            UserDto result = new()
+            {
+                Id = userEntity.Id,
+                UserName = userEntity.UserName,
+                Email = userEntity.Email,
+            };
+
+            return result;
         }
     }
 }

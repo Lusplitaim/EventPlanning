@@ -18,9 +18,8 @@ namespace EventPlanning.API
             builder.Services.AddAuthentication();
             builder.Services.AddAuthorization();
 
-            builder.Services.AddCore();
+            builder.Services.AddCore(builder.Configuration);
             builder.Services.AddPersistence(builder.Configuration);
-            builder.Services.ConfigureIdentity();
 
             var app = builder.Build();
 

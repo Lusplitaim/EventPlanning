@@ -1,6 +1,7 @@
 ﻿using EventPlanning.Core.Data;
 using EventPlanning.Core.Data.Entities;
 using EventPlanning.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,10 +15,12 @@ namespace EventPlanning.Infrastructure.Extensions
             services.AddDatabaseContext(configuration);
             services.AddUnitOfWork();
 
+            ConfigureIdentity(services);
+
             return services;
         }
 
-        public static void ConfigureIdentity(this IServiceCollection services)
+        private static void ConfigureIdentity(IServiceCollection services)
         {
             var builder = services.AddIdentityCore<UserEntity>(o =>
             {
@@ -30,6 +33,7 @@ namespace EventPlanning.Infrastructure.Extensions
                 // TODO: Email confirmation
                 // o.SignIn.RequireConfirmedEmail = true;
             })
+            .AddSignInManager()
             .AddEntityFrameworkStores<DatabaseContext>();
         }
 
