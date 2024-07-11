@@ -1,5 +1,7 @@
 ﻿using EventPlanning.Core.Models.Options;
+using EventPlanning.Core.Services;
 using EventPlanning.Core.Storages;
+using EventPlanning.Core.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,8 +19,13 @@ namespace EventPlanning.Core.Extensions
             ConfigureJWT(services, config);
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEventsService, EventsService>();
+            services.AddScoped<IUsersService, UsersService>();
 
             services.AddScoped<IUserStorage, UserStorage>();
+            services.AddScoped<IEventStorage, EventStorage>();
+
+            services.AddScoped<IAuthUtils, AuthUtils>();
 
             services.Configure<JwtOptions>(config.GetSection(JwtOptions.JwtSettings));
 

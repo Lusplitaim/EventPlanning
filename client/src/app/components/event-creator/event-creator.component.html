@@ -1,0 +1,31 @@
+<form (ngSubmit)="createEvent()" [formGroup]="eventForm">
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Event name</label>
+    <input type="text" name="name" class="form-control" formControlName="name" />
+  </div>
+  
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <input type="text" name="description" class="form-control" formControlName="description" />
+  </div>
+
+  <div class="mb-3">
+    <label for="startDate" class="form-label">Start</label>
+    <input type="date" name="startDate" class="form-control" formControlName="startDate" />
+  </div>
+
+  <div class="mb-3">
+    <label for="endDate" class="form-label">End</label>
+    <input type="date" name="endDate" class="form-control" formControlName="endDate" />
+  </div>
+
+  <div class="mb-3">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="isOnline" formControlName="isOnline" />
+        <label for="isOnline" class="form-check-label">Online</label>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>

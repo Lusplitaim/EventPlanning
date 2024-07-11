@@ -9,31 +9,37 @@ namespace EventPlanning.API.Controllers
     public class AuthenticationController : BaseController
     {
         private readonly IAuthenticationService m_AuthService;
-        public AuthenticationController(IAuthenticationService service)
+        private readonly IUsersService m_UsersService;
+        public AuthenticationController(IAuthenticationService service, IUsersService usersService)
         {
             m_AuthService = service;
+            m_UsersService = usersService;
         }
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> Authenticate([FromForm] LoginUserDto model)
+        public async Task<IActionResult> Authenticate(LoginUserDto model)
         {
             var success = await m_AuthService.AuthenticateUserAsync(model);
             if (success)
             {
-                return Ok(await m_AuthService.CreateTokenAsync(model.Email));
+                var token = await m_AuthService.CreateTokenAsync(model.Email);
+                var user = await m_UsersService.GetUserAsync(model.Email);
+                return Ok(new { user, token });
             }
 
             return BadRequest();
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromForm] RegisterUserDto model)
+        public async Task<IActionResult> RegisterUser(RegisterUserDto model)
         {
             var result = await m_AuthService.RegisterUserAsync(model);
             if (result.Succeeded)
             {
-                return CreatedAtAction(nameof(RegisterUser), default);
+                var token = await m_AuthService.CreateTokenAsync(model.Email);
+                var user = await m_UsersService.GetUserAsync(model.Email);
+                return CreatedAtAction(nameof(RegisterUser), new { user, token });
             }
 
             foreach (var error in result.Errors)

@@ -1,0 +1,23 @@
+<div class="d-flex flex-row-reverse">
+  <button class="btn btn-outline-primary" (click)="createEvent()">Create event</button>
+</div>
+<div ngbAccordion class="mt-2">
+    @for (ev of events; track ev.id) {
+        <div ngbAccordionItem>
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>{{ev.name}}</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                    <p>description: {{ev.description}}</p>
+                    <p>start: {{ev.startDate}}</p>
+                    <p>end: {{ev.endDate}}</p>
+                    <p>online: {{ev.isOnline}}</p>
+                    <button class="btn btn-light" (click)="register(ev.id)">Register to event</button>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+    }
+</div>

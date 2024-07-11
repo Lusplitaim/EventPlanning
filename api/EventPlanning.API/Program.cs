@@ -18,6 +18,8 @@ namespace EventPlanning.API
             builder.Services.AddAuthentication();
             builder.Services.AddAuthorization();
 
+            builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
             builder.Services.AddCore(builder.Configuration);
             builder.Services.AddPersistence(builder.Configuration);
 
@@ -31,6 +33,11 @@ namespace EventPlanning.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(builder => builder.WithOrigins("https://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
 
             app.UseAuthentication();
             app.UseAuthorization();

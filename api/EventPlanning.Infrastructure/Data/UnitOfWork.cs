@@ -1,4 +1,6 @@
 ﻿using EventPlanning.Core.Data;
+using EventPlanning.Core.Data.Repositories;
+using EventPlanning.Infrastructure.Data.Repositories;
 
 namespace EventPlanning.Infrastructure.Data
 {
@@ -9,6 +11,8 @@ namespace EventPlanning.Infrastructure.Data
         {
             m_DbContext = dbContext;
         }
+
+        public IEventRepository EventRepository => new EventRepository(m_DbContext);
 
         public async Task SaveAsync()
         {
