@@ -34,11 +34,10 @@ namespace EventPlanning.API.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegisterUserDto model)
         {
-            var regSuccess = await m_AuthService.RegisterUserAsync(model);
-            if (regSuccess)
+            var regResult = await m_AuthService.RegisterUserAsync(model);
+            if (regResult.Success)
             {
-                var user = await m_UsersService.GetUserAsync(model.Email);
-                return CreatedAtAction(nameof(RegisterUser), user);
+                return CreatedAtAction(nameof(RegisterUser), new { emailLink = regResult.Result });
             }
 
             return BadRequest();

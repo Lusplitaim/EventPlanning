@@ -27,13 +27,7 @@ export class AccountService {
   }
 
   register(model: any) {
-    return this.http.post<LoggedUserData>(this.baseUrl + 'authentication', model).pipe(
-      map((data) => {
-        if(data) {
-          this.setCurrentUser(data);
-        }
-      })
-    )
+    return this.http.post<any>(this.baseUrl + 'authentication', model);
   }
 
   setCurrentUser(data: LoggedUserData) {

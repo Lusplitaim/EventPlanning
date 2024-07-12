@@ -1,6 +1,7 @@
 ﻿using EventPlanning.Core.Data.Entities;
 using EventPlanning.Core.DTOs.Auth;
 using EventPlanning.Core.Exceptions;
+using EventPlanning.Core.Models;
 using EventPlanning.Core.Models.Constants;
 using EventPlanning.Core.Models.Options;
 using EventPlanning.Core.Storages;
@@ -131,26 +132,26 @@ namespace EventPlanning.Core.Services
             throw new NotFoundCoreException();
         }
 
-        public async Task<bool> RegisterUserAsync(RegisterUserDto model)
+        public async Task<RegistrationResult> RegisterUserAsync(RegisterUserDto model)
         {
             try
             {
                 var registerResult = await m_UserStorage.CreateAsync(model);
                 if (!registerResult.Succeeded)
                 {
-                    return false;
+                    return new() { Success = false };
                 }
 
                 var user = await m_UserManager.FindByEmailAsync(model.Email);
                 if (user is null)
                 {
-                    return false;
+                    return new() { Success = false };
                 }
 
                 var roleAddResult = await m_UserManager.AddToRoleAsync(user, UserRoleConstants.User);
                 if (!roleAddResult.Succeeded)
                 {
-                    return false;
+                    return new() { Success = false };
                 }
 
                 var token = await m_UserManager.GenerateEmailConfirmationTokenAsync(user);
@@ -162,9 +163,8 @@ namespace EventPlanning.Core.Services
                     Values = new { token, email = user.Email },
                     Protocol = m_HttpContextAccessor.HttpContext!.Request.Scheme,
                 });
-                await m_EmailService.SendEmailConfirmationAsync(confirmationLink!, user.Email, user.UserName);
 
-                return true;
+                return new() { Success = true, Result = confirmationLink! };
             }
             catch (Exception ex)
             {
