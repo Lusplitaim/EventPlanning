@@ -33,6 +33,7 @@ namespace EventPlanning.Infrastructure.Extensions
                 o.SignIn.RequireConfirmedEmail = true;
             })
             .AddSignInManager()
+            .AddRoles<IdentityRole<int>>()
             .AddEntityFrameworkStores<DatabaseContext>()
             .AddDefaultTokenProviders();
         }

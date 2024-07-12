@@ -4,6 +4,9 @@ import { EventsService } from '../../services/events.service';
 import { UserEvent } from '../../models/events/userEvent';
 import { ToastService } from '../../services/toast.service';
 import { Router } from '@angular/router';
+import { AccountService } from '../../services/account.service';
+import { take } from 'rxjs';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-events',
@@ -16,14 +19,21 @@ export class EventsComponent implements OnInit {
   private eventsService = inject(EventsService);
   private toastService = inject(ToastService);
   private router = inject(Router);
+  private accountService = inject(AccountService);
+
   events: UserEvent[] = [];
   disabled = false;
+  currentUser: User | undefined;
+  isAdmin = false;
 
   ngOnInit(): void {
     this.eventsService.getEvents()
       .subscribe(events => {
         this.events = events;
       });
+
+    this.currentUser = this.accountService.getCurrentUser();
+    this.isAdmin = !!this.currentUser?.roles.find(r => r.name === "admin");
   }
 
   register(eventId: number): void {

@@ -60,4 +60,8 @@ export class AccountService {
   isLoggedIn() {
     return localStorage.getItem('user') !== null;
   }
+
+  getCurrentUser(): User {
+    return JSON.parse(localStorage.getItem('user') ?? '') as User;
+  }
 }

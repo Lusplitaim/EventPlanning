@@ -1,6 +1,7 @@
 ﻿using EventPlanning.Core.Data.Entities;
 using EventPlanning.Core.DTOs.Auth;
 using EventPlanning.Core.Exceptions;
+using EventPlanning.Core.Models.Constants;
 using EventPlanning.Core.Models.Options;
 using EventPlanning.Core.Storages;
 using Microsoft.AspNetCore.Http;
@@ -96,11 +97,22 @@ namespace EventPlanning.Core.Services
         {
             try
             {
-                var user = await m_UserStorage.GetAsync(userEmail);
+                var user = await m_UserManager.FindByEmailAsync(userEmail);
 
                 if (user is not null)
                 {
-                    var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email), new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) };
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    };
+
+                    var userRoles = await m_UserManager.GetRolesAsync(user);
+                    foreach (var role in userRoles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                    }
+
                     var jwt = new JwtSecurityToken(
                         issuer: m_JwtOptions.ValidIssuer,
                         audience: m_JwtOptions.ValidAudience,
@@ -131,6 +143,12 @@ namespace EventPlanning.Core.Services
 
                 var user = await m_UserManager.FindByEmailAsync(model.Email);
                 if (user is null)
+                {
+                    return false;
+                }
+
+                var roleAddResult = await m_UserManager.AddToRoleAsync(user, UserRoleConstants.User);
+                if (!roleAddResult.Succeeded)
                 {
                     return false;
                 }

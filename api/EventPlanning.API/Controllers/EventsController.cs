@@ -1,5 +1,7 @@
 ﻿using EventPlanning.Core.DTOs.Event;
+using EventPlanning.Core.Models.Constants;
 using EventPlanning.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPlanning.API.Controllers
@@ -20,6 +22,7 @@ namespace EventPlanning.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoleConstants.Admin)]
         public async Task<IActionResult> CreateEvent(CreateEventDto model)
         {
             var userEvent = await m_EventsService.CreateEventAsync(model);

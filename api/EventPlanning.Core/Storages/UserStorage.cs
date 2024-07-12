@@ -1,5 +1,6 @@
 ﻿using EventPlanning.Core.Data.Entities;
 using EventPlanning.Core.DTOs.Auth;
+using EventPlanning.Core.DTOs.Role;
 using EventPlanning.Core.DTOs.User;
 using Microsoft.AspNetCore.Identity;
 
@@ -31,11 +32,14 @@ namespace EventPlanning.Core.Storages
                 return null;
             }
 
+            var roles = await m_UserManager.GetRolesAsync(userEntity);
+
             UserDto result = new()
             {
                 Id = userEntity.Id,
                 UserName = userEntity.UserName,
                 Email = userEntity.Email,
+                Roles = roles.Select(r => new RoleDto { Name = r }).ToList(),
             };
 
             return result;

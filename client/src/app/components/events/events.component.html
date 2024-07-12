@@ -1,5 +1,7 @@
 <div class="d-flex flex-row-reverse">
-  <button class="btn btn-outline-primary" (click)="createEvent()">Create event</button>
+  @if (isAdmin) {
+    <button class="btn btn-outline-primary" (click)="createEvent()">Create event</button>
+  }
 </div>
 <div ngbAccordion class="mt-2">
     @for (ev of events; track ev.id) {
