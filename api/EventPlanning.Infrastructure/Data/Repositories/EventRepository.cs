@@ -20,7 +20,7 @@ namespace EventPlanning.Infrastructure.Data.Repositories
 
         public async Task<List<EventEntity>> GetAsync()
         {
-            return await m_DbContext.Events.ToListAsync();
+            return await m_DbContext.Events.Include(e => e.Members).ToListAsync();
         }
 
         public async Task<List<EventEntity>> GetByCreatorAsync(int creatorId)
@@ -38,7 +38,7 @@ namespace EventPlanning.Infrastructure.Data.Repositories
                 events = events.AsNoTracking();
             }
 
-            return await events.SingleOrDefaultAsync(e => e.Id == eventId);
+            return await events.Include(e => e.Members).SingleOrDefaultAsync(e => e.Id == eventId);
         }
     }
 }

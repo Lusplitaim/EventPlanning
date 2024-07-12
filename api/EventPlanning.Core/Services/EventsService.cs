@@ -39,7 +39,7 @@ namespace EventPlanning.Core.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed to create event", ex);
+                throw new Exception("Failed to get events", ex);
             }
         }
 
@@ -51,6 +51,11 @@ namespace EventPlanning.Core.Services
                 if (userEvent is not null)
                 {
                     var currentUserId = m_AuthUtils.GetAuthUserId();
+                    var isMember = userEvent.Members.Any(m => m.Id == currentUserId);
+                    if (isMember)
+                    {
+                        return true;
+                    }
                     return await m_EventStorage.AddMember(eventId, currentUserId);
                 }
             }

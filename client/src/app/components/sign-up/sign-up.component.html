@@ -1,9 +1,9 @@
-<h3>Sign In</h3>
-<div class="nav-item">
-  <i class="bi bi-arrow-left"></i> 
-  <button type="button" class="btn btn-link" (click)="toRegistrationPage()">to registration page</button>
-</div>
-<form [formGroup]="loginForm" (ngSubmit)="login()">
+<h3>Sign Up</h3>
+<form [formGroup]="registerForm" (ngSubmit)="signup()">
+    <div class="mb-3">
+        <label for="userName" class="form-label">User name</label>
+        <input type="text" class="form-control" formControlName="userName" />
+    </div>
   <div class="mb-3">
     <label for="email" class="form-label">Email address</label>
     <input
@@ -17,5 +17,7 @@
     <label for="password" class="form-label">Password</label>
     <input type="password" class="form-control" formControlName="password" />
   </div>
-  <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Login</button>
+  <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">
+    Sign Up
+  </button>
 </form>

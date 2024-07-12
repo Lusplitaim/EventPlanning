@@ -1,4 +1,5 @@
 ﻿using EventPlanning.Core.Data.Entities;
+using EventPlanning.Core.DTOs.User;
 
 namespace EventPlanning.Core.DTOs.Event
 {
@@ -12,6 +13,8 @@ namespace EventPlanning.Core.DTOs.Event
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int CreatorId { get; set; }
+        public int? MaxMembersCount { get; set; }
+        public List<EventMemberDto> Members { get; set; } = [];
 
         public static EventDto From(EventEntity entity)
         {
@@ -25,6 +28,15 @@ namespace EventPlanning.Core.DTOs.Event
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate,
                 CreatorId = entity.CreatorId,
+                MaxMembersCount = entity.MaxMembersCount,
+                Members = entity.Members.Select(u =>
+                {
+                    return new EventMemberDto
+                    {
+                        Id = u.Id,
+                        UserName = u.UserName,
+                    };
+                }).ToList(),
             };
         }
     }

@@ -11,6 +11,11 @@
   </div>
 
   <div class="mb-3">
+    <label for="maxMembersCount" class="form-label">Max members count</label>
+    <input type="number" name="maxMembersCount" class="form-control" formControlName="maxMembersCount" />
+  </div>
+
+  <div class="mb-3">
     <label for="startDate" class="form-label">Start</label>
     <input type="date" name="startDate" class="form-control" formControlName="startDate" />
   </div>
@@ -27,5 +32,5 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-primary">Create</button>
+  <button type="submit" class="btn btn-primary" [disabled]="!eventForm.valid">Create</button>
 </form>

@@ -3,6 +3,7 @@ export interface EventCreate {
     description?: string,
     venue?: string,
     isOnline: boolean,
+    maxMembersCount?: number;
     startDate: Date,
     endDate: Date,
 }

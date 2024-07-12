@@ -16,7 +16,10 @@
                     <p>start: {{ev.startDate}}</p>
                     <p>end: {{ev.endDate}}</p>
                     <p>online: {{ev.isOnline}}</p>
-                    <button class="btn btn-light" (click)="register(ev.id)">Register to event</button>
+                    <button
+                      class="btn btn-light"
+                      [disabled]="forbiddenForRegister(ev)"
+                      (click)="register(ev)">Register to event</button>
                 </ng-template>
               </div>
             </div>

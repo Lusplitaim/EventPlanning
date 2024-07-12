@@ -2,7 +2,6 @@
 using EventPlanning.Core.Data.Entities;
 using EventPlanning.Core.DTOs.Event;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
 namespace EventPlanning.Core.Storages
 {
@@ -43,6 +42,7 @@ namespace EventPlanning.Core.Storages
                 StartDate = model.StartDate,
                 EndDate = model.EndDate,
                 CreatorId = creatorId,
+                MaxMembersCount = model.MaxMembersCount,
             };
 
             var createdEntity = await m_UnitOfWork.EventRepository.CreateAsync(entity);

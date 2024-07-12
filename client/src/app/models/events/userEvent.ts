@@ -1,3 +1,5 @@
+import { EventMember } from "../eventMember";
+
 export interface UserEvent {
     id: number,
     name: string,
@@ -6,5 +8,7 @@ export interface UserEvent {
     isOnline: boolean,
     startDate: Date,
     endDate: Date,
+    maxMembersCount?: number,
     creatorId: number,
+    members: EventMember[],
 }

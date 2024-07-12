@@ -5,7 +5,6 @@ import { UserEvent } from '../../models/events/userEvent';
 import { ToastService } from '../../services/toast.service';
 import { Router } from '@angular/router';
 import { AccountService } from '../../services/account.service';
-import { take } from 'rxjs';
 import { User } from '../../models/user';
 
 @Component({
@@ -36,9 +35,18 @@ export class EventsComponent implements OnInit {
     this.isAdmin = !!this.currentUser?.roles.find(r => r.name === "admin");
   }
 
-  register(eventId: number): void {
+  forbiddenForRegister(ev: UserEvent): boolean {
+    return ev.members.length === ev.maxMembersCount
+      || ev.members.some(m => m.id === this.currentUser?.id);
+  }
+
+  register(ev: UserEvent): void {
+    if (this.forbiddenForRegister(ev)) {
+      return;
+    }
+
     this.disabled = true;
-    this.eventsService.registerToEvent(eventId)
+    this.eventsService.registerToEvent(ev.id)
       .subscribe(_ => {
         this.toastService.show("Success", "You registered to the event");
         this.disabled = false;

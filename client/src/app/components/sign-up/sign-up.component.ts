@@ -1,39 +1,36 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { SharedModule } from '../../shared.module';
+import { Router } from '@angular/router';
 import { LoginUser } from '../../models/loginUser';
 import { AccountService } from '../../services/account.service';
-import { Router } from '@angular/router';
+import { SharedModule } from '../../shared.module';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-sign-up',
   standalone: true,
   imports: [SharedModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.scss'
 })
-export class LoginComponent {
+export class SignUpComponent {
   private accountService = inject(AccountService);
   private router = inject(Router);
   formBuilder = inject(FormBuilder);
 
-  loginForm = this.formBuilder.group({
+  registerForm = this.formBuilder.group({
+    userName: new FormControl<string>('', [Validators.required]),
     email: new FormControl<string>('', [Validators.required]),
     password: new FormControl<string>('', [Validators.required]),
   });
 
-  login() {
+  signup() {
     const logUserData: LoginUser = {
-      email: this.loginForm.get("email")?.value ?? "",
-      password: this.loginForm.get("password")?.value ?? "",
+      email: this.registerForm.get("email")?.value ?? "",
+      password: this.registerForm.get("password")?.value ?? "",
     };
     this.accountService.login(logUserData)
       .subscribe(_ => {
         this.router.navigate([""]);
       });
-  }
-
-  toRegistrationPage(): void {
-    this.router.navigate(["/sign-up"]);
   }
 }
