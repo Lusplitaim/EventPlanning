@@ -34,19 +34,21 @@ namespace EventPlanning.API.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegisterUserDto model)
         {
-            var result = await m_AuthService.RegisterUserAsync(model);
-            if (result.Succeeded)
+            var regSuccess = await m_AuthService.RegisterUserAsync(model);
+            if (regSuccess)
             {
-                var token = await m_AuthService.CreateTokenAsync(model.Email);
                 var user = await m_UsersService.GetUserAsync(model.Email);
-                return CreatedAtAction(nameof(RegisterUser), new { user, token });
+                return CreatedAtAction(nameof(RegisterUser), user);
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.TryAddModelError(error.Code, error.Description);
-            }
-            return BadRequest(ModelState);
+            return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            await m_AuthService.ConfirmEmailAsync(email, token);
+            return Ok("Email is confirmed");
         }
     }
 }

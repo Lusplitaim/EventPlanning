@@ -30,11 +30,11 @@ namespace EventPlanning.Infrastructure.Extensions
                 o.Password.RequireNonAlphanumeric = false;
                 o.Password.RequiredLength = 8;
                 o.User.RequireUniqueEmail = true;
-                // TODO: Email confirmation
-                // o.SignIn.RequireConfirmedEmail = true;
+                o.SignIn.RequireConfirmedEmail = true;
             })
             .AddSignInManager()
-            .AddEntityFrameworkStores<DatabaseContext>();
+            .AddEntityFrameworkStores<DatabaseContext>()
+            .AddDefaultTokenProviders();
         }
 
         private static IServiceCollection AddUnitOfWork(this IServiceCollection services)

@@ -3,6 +3,7 @@ using EventPlanning.Core.Services;
 using EventPlanning.Core.Storages;
 using EventPlanning.Core.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -21,6 +22,8 @@ namespace EventPlanning.Core.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEventsService, EventsService>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddSingleton<IEmailService, EmailService>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddScoped<IUserStorage, UserStorage>();
             services.AddScoped<IEventStorage, EventStorage>();
